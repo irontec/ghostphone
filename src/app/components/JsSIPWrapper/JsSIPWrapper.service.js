@@ -1,10 +1,11 @@
 export class JsSIPWrapperService {
 
-  constructor ($log, $window) {
+  constructor ($log, $window, jsSIPConfig) {
     'ngInject';
 
     this.$log = $log;
     this.JsSIP = $window.JsSIP;
+    this.JsSIPConfig = jsSIPConfig;
     this.ua = null;
 
   }
@@ -14,7 +15,11 @@ export class JsSIPWrapperService {
        return;
     }
 
-    this.connect();
+    if (this.JsSIPConfig.mustAutoConnect()) {
+      this.connect();  
+    }
+
+    
   }
 
   isConnected() {
@@ -24,10 +29,14 @@ export class JsSIPWrapperService {
 
   connect() {
 
-    var configuration = {
-      ws_servers: 'wss://fono.irontec.com:8089/ws',
-      uri: 'sip:jinfante@irontec.com',
-      password: 'farsa',
+    if (!this.JsSIPConfig.isValid()) {
+      return;
+    }
+
+    let configuration = {
+      uri: this.JsSIPConfig.uri,
+      password: this.JsSIPConfig.password,
+      ws_servers: this.JsSIPConfig.ws_servers,
       log: { level: 'debug' },
       register: true,
       register_expires: 600,
@@ -42,13 +51,12 @@ export class JsSIPWrapperService {
       hack_ip_in_contact: false
     };
 
-    
+
     this.ua = new this.JsSIP.UA(configuration);
     this.ua.start();
 
     this.ua.on('newRTCSession', (e) => {
       
-      console.log("new CALL!!", e);
       var call = e.session;
 
     });

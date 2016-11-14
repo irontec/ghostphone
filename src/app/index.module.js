@@ -8,7 +8,7 @@ import { CallsController } from './calls/calls.controller';
 import { ConfigController } from './config/config.controller';
 
 import { JsSIPWrapperService } from './components/JsSIPWrapper/JsSIPWrapper.service';
-import { WebDevTecService } from './components/webDevTec/webDevTec.service';
+import { JsSIPConfigService } from './components/JsSIPConfig/JsSIPConfig.service';
 
 import { NavbarDirective } from './components/navbar/navbar.directive';
 import { ToolbarDirective } from './components/toolbar/toolbar.directive';
@@ -16,7 +16,7 @@ import { ToolbarDirective } from './components/toolbar/toolbar.directive';
 import { MalarkeyDirective } from './components/malarkey/malarkey.directive';
 
 
-angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'toastr'])
+angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'LocalStorageModule'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)
@@ -24,8 +24,7 @@ angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages
   .run(runBlock)
 
   .service('jsSIPWrapper', JsSIPWrapperService)
-
-  .service('webDevTec', WebDevTecService)
+  .service('jsSIPConfig', JsSIPConfigService)
 
   .controller('PadController', PadController)
   .controller('CallsController', CallsController)

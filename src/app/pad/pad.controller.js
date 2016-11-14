@@ -1,5 +1,5 @@
 export class PadController {
-  constructor ($timeout, jsSIPWrapper, toastr) {
+  constructor ($timeout, jsSIPWrapper) {
     'ngInject';
 
     this.title = 'GhostPhone';
@@ -9,23 +9,20 @@ export class PadController {
     
     this.jssip = jsSIPWrapper;
     this.activate();
+    this.isConnected = () => jsSIPWrapper.isConnected();
 
 
   }
 
-  activate(jsSIPWrapper) {
-
+  activate() {
     this.jssip.checkConnection();
-
   }
 
   onPressButton(buttonValue) {
     if (!this.target) {
       this.target = '';
     }
-
     this.target = this.target + buttonValue;
-
   }
 
   onKeyDown(event) {
@@ -42,8 +39,4 @@ export class PadController {
     this.jssip.call(this.target);
   }
 
-  showToastr() {
-    this.toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-    this.classAnimation = '';
-  }
 }

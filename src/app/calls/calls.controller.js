@@ -1,5 +1,5 @@
 export class CallsController {
-  constructor ($timeout, jsSIPWrapper, toastr) {
+  constructor ($timeout, jsSIPWrapper) {
     'ngInject';
 
     
@@ -24,8 +24,4 @@ export class CallsController {
     });
   }
 
-  showToastr() {
-    this.toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-    this.classAnimation = '';
-  }
 }

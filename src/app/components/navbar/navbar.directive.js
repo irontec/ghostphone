@@ -36,7 +36,7 @@ class NavbarController {
         icon: 'settings',
         label: 'Configuración',
         state: 'config'
-      },
+      }
     ];
 
 
@@ -47,7 +47,7 @@ class NavbarController {
     this.$state.go(tab.state);
   }
 
-  onDeselectTab(tab) {
+  onDeselectTab() {
   }
 
   isSeletected(tab) {

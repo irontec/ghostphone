@@ -14,7 +14,7 @@
 
 
     <div flex="100" layout-align="center center" class="action">
-      <md-button class="md-fab md-maxi md-accent" aria-label="{{n}}" ng-click="vm.makeCall()">
+      <md-button class="md-fab md-maxi md-accent" aria-label="{{n}}" ng-disabled="!vm.isConnected()" ng-click="vm.makeCall()">
         <md-icon md-font-set="material-icons" ng-click="vm.makeCall()"> phone </md-icon> 
       </md-button>
     </div>

@@ -4,26 +4,28 @@
 
 	<md-input-container class="md-block">
    		<label>username: </label>
-   		<input ng-model="vm.config.username">
+   		<input ng-model="vm.data.username" ng-disabled="vm.connected()">
 	</md-input-container>
 	
 	<md-input-container class="md-block">
    		<label>password: </label>
-   		<input ng-model="vm.config.password" type="password">
+   		<input ng-model="vm.data.password" type="password" ng-disabled="vm.connected()">
 	</md-input-container>
 
 	<md-input-container class="md-block">
    		<label>WS URI: </label>
-   		<input ng-model="vm.config.wsuri" >
+   		<input ng-model="vm.data.ws_servers" ng-disabled="vm.connected()">
 	</md-input-container>
 		
-	<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="vm.config.save" class="md-primary">
+	<md-checkbox ng-disabled="!vm.data.save || vm.connected()" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.autoConnect" class="md-primary">
+            Auto reconectar al Iniciar
+	</md-checkbox>
+
+	<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.save" class="md-primary" ng-disabled="vm.connected()">
             Recordar configuración <em>(localstorage)</em>
 	</md-checkbox>
 
-	<md-checkbox ng-disabled="!vm.config.save" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.config.auto" class="md-primary">
-            Auto reconectar al Iniciar
-	</md-checkbox>
+	
 
 	<section layout="row" layout-align="center center" layout-wrap>
 	    <md-button class="md-raised md-primary" ng-hide="vm.connected()" ng-click="vm.connect()">
