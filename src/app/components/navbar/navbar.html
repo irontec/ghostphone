@@ -1,0 +1,7 @@
+<md-tabs md-autoselect="false" md-selectexd="vm.selectedTabIndex" md-align-tabs="bottom" layout-align="space-around strech" class="main-tabs" md-stretch-tabs="always">
+
+	<md-tab ng-repeat="tab in vm.tabs" id="{{tab.label}}" md-on-select="vm.onSelectTab(tab)" md-on-deselect="vm.onDeselectTab(tab)" md-active="vm.isSeletected(tab)">
+		 <md-icon md-font-set="material-icons"> {{tab.icon}} </md-icon>
+	</md-tab>
+
+</md-tabs>

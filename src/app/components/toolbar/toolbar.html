@@ -1,0 +1,12 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>{{ vm.title }}</span>
+    </h3>
+    <span flex></span>
+	
+	<md-icon ng-hide="!vm.connected()" md-font-set="material-icons" aria-label="Connected"> mood </md-icon> 
+	<md-icon ng-hide="vm.connected()" md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
+      
+    </div>
+</md-toolbar>

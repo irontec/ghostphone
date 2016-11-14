@@ -1,0 +1,42 @@
+<main-toolbar></main-toolbar>
+
+<md-content layout="column" layout-padding layout-align="none none" flex="grow">
+
+	<md-input-container class="md-block">
+   		<label>username: </label>
+   		<input ng-model="vm.config.username">
+	</md-input-container>
+	
+	<md-input-container class="md-block">
+   		<label>password: </label>
+   		<input ng-model="vm.config.password" type="password">
+	</md-input-container>
+
+	<md-input-container class="md-block">
+   		<label>WS URI: </label>
+   		<input ng-model="vm.config.wsuri" >
+	</md-input-container>
+		
+	<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="vm.config.save" class="md-primary">
+            Recordar configuración <em>(localstorage)</em>
+	</md-checkbox>
+
+	<md-checkbox ng-disabled="!vm.config.save" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.config.auto" class="md-primary">
+            Auto reconectar al Iniciar
+	</md-checkbox>
+
+	<section layout="row" layout-align="center center" layout-wrap>
+	    <md-button class="md-raised md-primary" ng-hide="vm.connected()" ng-click="vm.connect()">
+	      	<md-icon md-font-set="material-icons" aria-label="Connected"> mood </md-icon>
+	      	Conectar
+	  	</md-button>
+	    <md-button class="md-raised md-warn" ng-hide="!vm.connected()" ng-click="vm.disconnect()">
+	      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
+	      	Desconectar
+	  	</md-button>
+    </section>
+
+
+</md-content>
+
+<main-navbar></main-navbar>
