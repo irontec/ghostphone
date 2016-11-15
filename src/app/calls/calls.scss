@@ -1,14 +1,5 @@
-.pad {
-	text-align: center;
-
-	.md-button.md-fab.md-maxi {
-      line-height: 2.6em;
-      width: 2.6em;
-      height: 2.6em;
-      font-size: 1.6em;
-	}
-
-	.action {
-		margin-top:2em;
+md-list-item.active {
+	h3 {
+		font-weight: bold !important;
 	}
 }

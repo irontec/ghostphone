@@ -1,27 +1,69 @@
 <main-toolbar></main-toolbar>
 
-<md-content layout="column" layout-align="start stretch" flex="grow">
-  
+<md-content layout="column" layout-padding layout-align="start stretch" flex="grow">
+
 <md-list flex>
 
-	<md-list-item class="md-2-line" ng-repeat="call in vm.calls">
-		
+	<md-list-item class="md-2-line" ng-repeat="call in vm.calls | orderBy:'-'" ng-class="{'active': call.status === 'active'}">
 
-		<md-icon ng-hide="call.type !== 'IN'" md-font-set="material-icons" aria-label="Entrante"> call_received </md-icon> 
-		<md-icon ng-hide="call.type !== 'OUT'" md-font-set="material-icons" aria-label="Saliente"> call_made </md-icon> 
-        
+
+		<!-- call.status: active / ringing / paused / finished -->
+		<md-icon ng-if="call.status === 'ringing'" ng.hide="call.status !== 'ringing'" md-font-set="material-icons"  class="md-accent shake shake-constant"> call </md-icon>
+		<md-icon ng-if="call.status === 'active'" md-font-set="material-icons"  class="md-accent"> call </md-icon>
+
+		<md-icon ng-if="call.status === 'paused'" md-font-set="material-icons"> phone_paused </md-icon>
+		<md-icon ng-if="call.status === 'finished'" md-font-set="material-icons"> call </md-icon>
+		<!-- /call.status-->
+
+
         <div class="md-list-item-text">
-            <h3> {{ call.target }} </h3>
-            <p> {{ call.date  }} </p>
+            <h3> {{ call.target }}
+
+				<!-- call.type IN / OUT / MISSED -->
+				<md-icon ng-if="call.type === 'IN'" md-font-set="material-icons" > call_received
+					<md-tooltip md-direction="right">
+		          		Llamada entrante
+		        	</md-tooltip>
+				</md-icon>
+				<md-icon ng-if="call.type === 'OUT'" md-font-set="material-icons"> call_made
+					<md-tooltip md-direction="right">
+		          		Llamada saliente
+		        	</md-tooltip>
+				</md-icon>
+				<md-icon ng-if="call.type === 'MISSED'" md-font-set="material-icons"> call_missed
+					<md-tooltip md-direction="right">
+		          		Llamada perdida
+		        	</md-tooltip>
+				</md-icon>
+				<!-- /call.type-->
+
+            </h3>
+            <p> {{ call.date  }} <em ng-if="call.type !== 'MISSED'" >({{ call.duration }})</p>
         </div>
-        <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)" aria-label="call">
-      	  <md-icon md-font-set="material-icons" aria-label="Llamar"> phone </md-icon> 
+
+
+        <!-- actions -->
+        <md-button class="md-icon-button" ng-if="call.status === 'paused'">
+            <md-icon md-font-set="material-icons" aria-label="recuperar"> swap_calls </md-icon>
+        </md-button>
+
+
+        <md-button class="md-icon-button" ng-if="call.status === 'active' || call.status === 'paused'">
+            <md-icon md-font-set="material-icons" aria-label="Colgar"> close </md-icon>
+        </md-button>
+
+		<md-button class="md-fab md-mini md-raised" ng-if="call.status === 'finished'">
+            <md-icon md-font-set="material-icons" aria-label="Llamar"> call </md-icon>
+        </md-button>
+        <!-- /actions -->
+
+
         </md-button>
 
     </md-list-item>
 
 
-  
+
 </md-list>
 
 

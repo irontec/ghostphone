@@ -1,5 +1,5 @@
 export class CallsController {
-  constructor ($timeout, jsSIPWrapper, moment) {
+  constructor ($timeout, $rootScope, jsSIPWrapper, moment) {
     'ngInject';
 
     
@@ -7,33 +7,40 @@ export class CallsController {
     
     this.activate();
     this.connected = () => jsSIPWrapper.isConnected();
-    this.calls = [
+    
+    this.calls = this.jssip.getCalls();
+
+    // TODO: desinfectar!
+    $rootScope.$on('callsUpdated', (event, data) => $timeout({}));
+
+    var foo = [
       {
           type: 'IN',
           target: '695161132',
           date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'answered',
+          status: 'active',
+
           duration: '00:60'
       },
       {
           type: 'OUT',
           target: '695161132',
           date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'answered',
+          status: 'paused',
           duration: '00:60'
       },
       {
-          type: 'OUT',
+          type: 'MISSED',
           target: '695161132',
           date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'answered',
+          status: 'finished',
           duration: '00:60'
       },
       {
           type: 'IN',
           target: '695161132',
           date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'answered',
+          status: 'finished',
           duration: '00:60'
       },
 
@@ -41,6 +48,7 @@ export class CallsController {
 
 
   }
+
 
   activate() {
     this.jssip.checkConnection();

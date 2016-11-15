@@ -6,8 +6,6 @@ export function config ($logProvider, localStorageServiceProvider, $mdThemingPro
 
   localStorageServiceProvider.setPrefix('ghostPhone');
 
-  $mdThemingProvider.theme('default')
-    .primaryPalette('pink')
-    .accentPalette('orange');
+  $mdThemingProvider.theme('default');
 
 }

@@ -1,26 +1,29 @@
 <main-toolbar></main-toolbar>
 
-<md-content layout="column" layout-padding layout-align="start center" flex="grow"  >
-  <md-input-container class="dial md-block">
-    <md-icon md-font-set="material-icons"> face </md-icon>
-    <input ng-model="vm.target" placeholder="who are you gonna call?" ng-keydown="vm.onKeyDown($event)">
-  </md-input-container>
+  <md-content layout="column" layout-padding layout-align="start center" flex="grow"  >
+    <form ng-submit="vm.makeCall()">
+    <md-input-container class="dial md-block">
+      <md-icon md-font-set="material-icons"> face </md-icon>
+      <input ng-model="vm.target" placeholder="who are you gonna call?" ng-keydown="vm.onKeyDown($event)">
+    </md-input-container>
 
 
-  <section layout="row" layout-wrap class="pad">
-    <div ng-repeat="n in vm.padItems track by $index" flex="33" layout-align="center center">
-      <md-button class="md-fab md-maxi md-primary" aria-label="{{n}}" ng-click="vm.onPressButton(n)">{{n}}</md-button>
-    </div>
+    <section layout="row" layout-wrap class="pad">
+      <div ng-repeat="n in vm.padItems track by $index" flex="33" layout-align="center center">
+        <md-button class="md-fab md-maxi md-primary" aria-label="{{n}}" ng-click="vm.onPressButton(n)">{{n}}</md-button>
+      </div>
 
 
-    <div flex="100" layout-align="center center" class="action">
-      <md-button class="md-fab md-maxi md-accent" aria-label="{{n}}" ng-disabled="!vm.isConnected()" ng-click="vm.makeCall()">
-        <md-icon md-font-set="material-icons" ng-click="vm.makeCall()"> phone </md-icon> 
-      </md-button>
-    </div>
+      <div flex="100" layout-align="center center" class="action">
+        <md-button class="md-fab md-maxi md-accent" aria-label="{{n}}" ng-disabled="vm.connected()" ng-click="vm.makeCall()">
+          <md-icon md-font-set="material-icons" ng-click="vm.makeCall()"> phone </md-icon> 
+        </md-button>
+      </div>
 
-  </section>
+    </section>
+    </form>
 
-</md-content>
+  </md-content>
+
 
 <main-navbar></main-navbar>

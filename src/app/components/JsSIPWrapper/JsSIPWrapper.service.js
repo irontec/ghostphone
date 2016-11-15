@@ -1,6 +1,6 @@
 export class JsSIPWrapperService {
 
-  constructor ($log, $window, jsSIPConfig, $mdToast) {
+  constructor ($log,$window, jsSIPConfig, Call, $mdToast) {
     'ngInject';
 
     this.$log = $log;
@@ -8,6 +8,8 @@ export class JsSIPWrapperService {
     this.JsSIPConfig = jsSIPConfig;
     this.ua = null;
     this.toast = $mdToast;
+    this.callService = Call;
+    this.calls = [];
   }
 
   checkConnection(force) {
@@ -17,13 +19,13 @@ export class JsSIPWrapperService {
 
     if (this.JsSIPConfig.mustAutoConnect()) {
        this.toast.show(
-      this.toast.simple()
-        .textContent('conectando!')
-        .capsule(true)
-        .position('top end')
-        .hideDelay(30000)
-        .toastClass('toastMsg')
-    );
+          this.toast.simple()
+            .textContent('conectando!')
+            .capsule(true)
+            .position('bottom')
+            .hideDelay(30000)
+        );
+  
       this.connect();  
     }
 
@@ -45,7 +47,7 @@ export class JsSIPWrapperService {
       uri: this.JsSIPConfig.uri,
       password: this.JsSIPConfig.password,
       ws_servers: this.JsSIPConfig.ws_servers,
-      log: { level: 'debug' },
+      //log: { level: 'debug' },
       register: true,
       register_expires: 600,
       session_timers: true,
@@ -61,15 +63,11 @@ export class JsSIPWrapperService {
 
 
     this.ua = new this.JsSIP.UA(configuration);
-    this.ua.start();
 
     this.ua.on('newRTCSession', (e) => {
-      
-      var call = e.session;
-
+      this.calls.push(this.callService.factory(e.session));
     });
-
-
+    this.ua.start();
   }
 
   disconnect() {
@@ -79,6 +77,10 @@ export class JsSIPWrapperService {
 
   getUA() {
     return this.ua;
+  }
+
+  getCalls() {
+    return this.calls;
   }
 
   getCallEventHandlers() {

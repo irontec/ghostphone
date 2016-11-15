@@ -1,5 +1,5 @@
 export class PadController {
-  constructor ($timeout, jsSIPWrapper) {
+  constructor ($timeout, $state, jsSIPWrapper) {
     'ngInject';
 
     this.title = 'GhostPhone';
@@ -10,7 +10,7 @@ export class PadController {
     this.jssip = jsSIPWrapper;
     this.activate();
     this.isConnected = () => jsSIPWrapper.isConnected();
-
+    this.$state = $state;
 
   }
 
@@ -37,6 +37,7 @@ export class PadController {
 
   makeCall() {
     this.jssip.call(this.target);
+    this.$state.go('calls');
   }
 
 }
