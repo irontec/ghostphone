@@ -35,7 +35,8 @@ export class PadController {
     this.hotkeys.add({
       combo: 'backspace',
       callback: () => {
-        this.target = this.target.substr(0, this.target.lenght);
+        
+        this.target = this.target.substr(0, this.target.length-1);
       }
     });
 

@@ -4,10 +4,7 @@ export class JsSIPConfigService {
 
     this.storage = localStorageService;
 
-
     let storedData = this.storage.get('JsSIPData');
-
-
 
     this.data = {
       ws_servers: '',
@@ -29,8 +26,8 @@ export class JsSIPConfigService {
 
   isValid() {
     return this.data.ws_servers !== '' &&
-            this.data.uri !== '' &&
-            this.data.username !== '' &&
+            (this.data.uri !== '' ||
+            this.data.username !== '' ) &&
             this.data.password !== '';
   }
 

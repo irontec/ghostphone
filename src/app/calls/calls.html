@@ -91,13 +91,12 @@
         </md-button>
 
         <!-- /actions -->
-
-
     </md-list-item>
 
-
-
+    <md-button ng-if="vm.calls.length" md-no-ink class="md-raised md-mini" flex-offset="45" ng-click="vm.cleanCallList()">Limpiar Lista Llamadas</md-button>
 </md-list>
+
+
 
 
 </md-content>

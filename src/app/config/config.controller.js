@@ -41,18 +41,8 @@ export class ConfigController {
 
 
     $scope.$watch(() => this.jssipConfig.getData(), this.configChanged(), true);
-
-    $scope.$watch(() => this.connecting, () => {
-
-         $timeout({});
-
-    }, true);
-
-    $scope.$watch(() => this.disconnecting, () => {
-
-         $timeout({});
-
-    }, true);
+    $scope.$watch(() => this.connecting, () => $timeout({}), true);
+    $scope.$watch(() => this.disconnecting, () => $timeout({}), true);
 
 
   }

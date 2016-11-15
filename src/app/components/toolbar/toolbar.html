@@ -7,7 +7,7 @@
 	
 	<md-icon ng-hide="!vm.connected()" md-font-set="material-icons" aria-label="Connected"> mood 
   		<md-tooltip md-direction="left">
-          Conectado
+          Conectado {{ vm.who() }}
         </md-tooltip>
 	</md-icon> 
 	<md-icon ng-hide="vm.connected()" md-font-set="material-icons" aria-label="Disconnected"> mood_bad 

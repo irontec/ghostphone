@@ -1,4 +1,4 @@
-/* global malarkey:false, moment:false */
+/* global moment:false */
 
 import { config } from './index.config';
 import { routerConfig } from './index.route';

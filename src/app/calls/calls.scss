@@ -21,3 +21,8 @@ button.md-icon-button.extraSmall {
     width: 30px;
     border-radius: 50%;
 }
+
+md-content {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

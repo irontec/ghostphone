@@ -1,19 +1,29 @@
 export class JsSIPWrapperService {
 
 
-  constructor ($log,$window, $state, $rootScope, $mdToast, jsSIPConfig, Call) {
+  constructor ($log,$window, $state, $rootScope, $mdToast, jsSIPConfig, localStorageService, Call) {
     'ngInject';
 
     this.$log = $log;
     this.$rootScope = $rootScope;
     this.JsSIP = $window.JsSIP;
+    this.$document = $window.document;
     this.JsSIPConfig = jsSIPConfig;
+    this.localStorageService = localStorageService;
     this.ua = null;
     this.toast = $mdToast;
     this.callService = Call;
+    this.whoami = '';
     this.calls = [];
+    this.loadStoredCalls()
 
+  }
 
+  loadStoredCalls () {
+    let callList = this.localStorageService.get("callList");
+    if (callList.length) {
+      this.calls = callList.map((c)=>this.callService.doImport(c)).filter((c)=>c.constructor.name === 'Call') || [];
+    }
   }
 
   checkConnection(force) {
@@ -22,18 +32,8 @@ export class JsSIPWrapperService {
     }
 
     if (this.JsSIPConfig.mustAutoConnect()) {
-       this.toast.show(
-          this.toast.simple()
-            .parent(angular.element(document.querySelector('md-content')))
-            .textContent('conectando!')
-            .capsule(true)
-            .position('bottom')
-            .hideDelay(3000)
-        );
-
       this.connect();
     }
-
 
   }
 
@@ -71,9 +71,10 @@ export class JsSIPWrapperService {
     this.ua = new this.JsSIP.UA(configuration);
 
 
-    this.ua.on('connected', (e) => this.notify("connected"));
-    this.ua.on('disconnected', (e) => this.notify("disconnected"));
-    this.ua.on('connecting', (e) => {});
+    this.ua.on('connected', (e) => this.notify("connected", e));
+    this.ua.on('disconnected', (e) => this.notify("disconnected",e ));
+    this.ua.on('connecting', (e) => this.notify("connecting",e ));
+    this.ua.on('registered', (e) => this.notify("registered",e ));
 
     this.ua.on('newRTCSession', (e) => {
       this.calls.push(this.callService.factory(e.session));
@@ -81,8 +82,33 @@ export class JsSIPWrapperService {
     this.ua.start();
   }
 
-  notify (status) {
+  notify (status, event) {
     this.$rootScope.$broadcast('statusUpdated', status);
+    
+    if (status === 'registered') {
+
+      this.whoami = event.response.from.uri.user;
+
+      this.toast.show(
+          this.toast.simple()
+            .parent(angular.element(this.$document.querySelector('md-content')))
+            .textContent(`conectando como ${this.whoami}`)
+            .capsule(true)
+            .position('bottom')
+            .hideDelay(3000)
+      );
+    }
+
+    if (status === 'disconnected') {
+      this.toast.show(
+          this.toast.simple()
+            .parent(angular.element(this.$document.querySelector('md-content')))
+            .textContent('Desconectado del servidor :(')
+            .capsule(true)
+            .position('bottom')
+            .hideDelay(3000)
+      );
+    }
   }
 
 
@@ -99,6 +125,11 @@ export class JsSIPWrapperService {
     return this.calls;
   }
 
+  deleteStoredCallList() {
+    this.calls = [];
+    this.localStorageService.remove("callList");
+    this.$rootScope.$broadcast('callsUpdated');
+  }
 
   call(target) {
     this.ua.call(target, {

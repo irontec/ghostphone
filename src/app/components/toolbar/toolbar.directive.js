@@ -19,8 +19,16 @@ class ToolBarController {
     'ngInject';
 
     this.title = 'GhostPhone';
+    this.who = function() {
+      let w = jsSIPWrapper.whoami;
+      if (w !== '') {
+        return ' como ' + w;
+      }
+      return '';
+    };
+    
     this.connected = () => jsSIPWrapper.isConnected();
-
+    
 
   }
 }

@@ -1,51 +1,27 @@
 export class CallsController {
-  constructor ($timeout, $rootScope, jsSIPWrapper, moment) {
+  constructor ($timeout, $window, $rootScope, $mdDialog, jsSIPWrapper, moment, localStorageService) {
     'ngInject';
 
-
+    this.$mdDialog = $mdDialog;
+    this.$document = $window.document;
+    this.localStorageService = localStorageService;
     this.jssip = jsSIPWrapper;
-
     this.activate();
     this.connected = () => jsSIPWrapper.isConnected();
 
     this.calls = this.jssip.getCalls();
 
     // TODO: desinfectar!
-    $rootScope.$on('callsUpdated', (event, data) => $timeout({}));
+    $rootScope.$on('callsUpdated', () => {
+    
+      this.calls = this.jssip.getCalls();
+      
+      $timeout(()=>{
+        this.localStorageService.set("callList", this.calls.map((c)=>c.doExport()));
+      });
 
-    var foo = [
-      {
-          type: 'IN',
-          target: '695161132',
-          date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'active',
-
-          duration: '00:60'
-      },
-      {
-          type: 'OUT',
-          target: '695161132',
-          date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'paused',
-          duration: '00:60'
-      },
-      {
-          type: 'MISSED',
-          target: '695161132',
-          date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'finished',
-          duration: '00:60'
-      },
-      {
-          type: 'IN',
-          target: '695161132',
-          date: moment().format('DD/MM/YYYY HH:mm:ss'),
-          status: 'finished',
-          duration: '00:60'
-      },
-
-    ];
-
+    });
+   
 
   }
 
@@ -57,7 +33,22 @@ export class CallsController {
 
   makeCall(call) {
     this.jssip.call(call.target);
+  }
+
+  cleanCallList() {
+    
+    let confirm = this.$mdDialog.confirm()
+          .title('¿Deseas eliminar la lista de llamadas?')
+          .parent(angular.element(this.$document.querySelector('md-list')))
+          .clickOutsideToClose(true)
+          .textContent('Todas las llamadas se eliminarán de GhostPhone.')
+          .ok('Continuar')
+          .cancel('Cancelar');
+
+    this.$mdDialog.show(confirm).then(() => this.jssip.deleteStoredCallList());
 
   }
+
+
 
 }

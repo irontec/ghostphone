@@ -1,21 +1,29 @@
 
-class CleanCall {
-    constructor (session, moment, storage, $rootScope, $window, $state, $interval) {
+class Call {
 
-        this.session = session;
+    constructor ($rootScope, $window, $state, $interval, moment) {
+        'ngInject';
+
         this.$rootScope = $rootScope;
+        this.$state = $state;
         this.JsSIP = $window.JsSIP;
+        this.$document = $window.document;
         this.moment = moment;
-
         this.localStream = null;
+        this.muted = false;
+
+    }
+
+    setSession(session) {
+
+        
+        this.session = session;
         this.type =  this.session.direction === "incoming"? 'IN':'OUT';
         this.id = this.session.id;
         this.target = this.session.remote_identity.uri.user;
         this.username = this.session.remote_identity.display_name || '';
-        this.muted = false;
-        this.date = moment().format('DD/MM/YYYY HH:mm:ss');
-
-
+        
+        this.date = this.moment().format('DD/MM/YYYY HH:mm:ss');
 
         this.status = 'ringing';
         this.duration = '';
@@ -32,7 +40,7 @@ class CleanCall {
         session.on('addstream', (e) => this.onStreamAdded(e));
 
         if (this.type === 'IN') {
-            $state.go('calls');
+            this.$state.go('calls');
         }
 
         this.notifyUI();
@@ -41,7 +49,6 @@ class CleanCall {
 
 
     onConnecting () {
-
         if (this.session.connection.getLocalStreams().length > 0) {
           this.localStream = this.session.connection.getLocalStreams()[0];
         }
@@ -69,13 +76,13 @@ class CleanCall {
           }
         }
 
-        this.date = moment(this.session.start_time).format('DD/MM/YYYY HH:mm:ss');
+        this.date = this.moment(this.session.start_time).format('DD/MM/YYYY HH:mm:ss');
 
     }
 
     onStreamAdded (e) {
 
-        var remoteView = document.getElementById('remoteView');
+        var remoteView = this.$document.getElementById('remoteView');
         remoteView = this.JsSIP.rtcninja.attachMediaStream(remoteView, e.stream);
 
     }
@@ -94,7 +101,7 @@ class CleanCall {
         this.notifyUI();
     }
 
-    onEnded (e) {
+    onEnded () {
 
         this.status = 'finished';
         var startTime = this.moment(this.session.start_time);
@@ -158,22 +165,47 @@ class CleanCall {
         this.$rootScope.$broadcast('callsUpdated');
     }
 
+    doExport () {
+        return {
+            id: this.id,
+            status: 'finished',
+            type: this.type,
+            target: this.target,
+            username: this.username,
+            date: this.date,
+            duration: this.duration
+        }
+    }
+
+    doImport(raw) {
+        this.id = raw.id;
+        this.status = raw.status;
+        this.type = raw.type;
+        this.target = raw.target;
+        this.username = raw.username;
+        this.date = raw.date;
+        this.duration = raw.duration;
+    }
+
+
 }
 
 export class CallService {
-  constructor ($rootScope, localStorageService, moment, $window, $state, $interval) {
+  constructor ($injector) {
     'ngInject';
-    this.moment = moment;
-    this.storage = localStorageService
-    this.$rootScope = $rootScope;
-    this.$window = $window;
-    this.$state = $state;
-    this.$interval = $interval;
-
+    this.$injector = $injector;
   }
 
   factory(session) {
-  	return new CleanCall(session, this.moment, this.storage, this.$rootScope, this.$window, this.$state, this.$interval);
+    let call  = this.$injector.instantiate(Call);
+    call.setSession(session);
+    return call;
+  }
+
+  doImport(raw) {
+    let call  = this.$injector.instantiate(Call);
+    call.doImport(raw);
+    return call;
   }
 
 }
