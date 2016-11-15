@@ -69,8 +69,13 @@
 
 
 
-        <md-button class="md-fab md-mini md-raised" ng-if="call.status !== 'finished'" ng-click="call.hangup()"  md-colors="{::background: 'red'}">
-            <md-icon md-font-set="material-icons" aria-label="Colgar"> call_end </md-icon>
+        <md-button class="md-fab md-mini md-primary" ng-if="call.status !== 'finished'" ng-click="call.hangup()">
+            <md-icon md-font-set="material-icons" aria-label="Colgar"> call_end
+                <md-tooltip md-direction="top">
+                    Colgar
+                </md-tooltip>
+
+            </md-icon>
         </md-button>
 
         <md-button class="md-fab md-mini md-raised" ng-if="call.status === 'finished'" ng-click="vm.makeCall(call);">

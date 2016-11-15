@@ -39,14 +39,14 @@ export class JsSIPConfigService {
   }
 
   get uri () {
-    return this.data.uri;
-    //return 'sip:' + this.data.username +'@irontec.com';
+
+    return 'sip:' + this.data.username +'@irontec.com';
   }
-  
+
   get ws_servers() {
     return this.data.ws_servers;
   }
-  
+
   get password() {
     return this.data.password;
   }

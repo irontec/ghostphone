@@ -4,6 +4,13 @@ md-list-item.active {
 	}
 }
 
+md-list-item{
+    h3 {
+        max-width:175px;
+        overflow:visible;
+    }
+}
+
 
 button.md-icon-button.extraSmall {
     margin: 0 6px;

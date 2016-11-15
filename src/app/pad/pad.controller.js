@@ -1,24 +1,36 @@
 export class PadController {
-  constructor ($timeout, $state, jsSIPWrapper) {
+  constructor ($timeout, $state, hotkeys, jsSIPWrapper) {
     'ngInject';
 
     this.title = 'GhostPhone';
     this.target;
-    
+
     this.padItems = ['1','2','3','4','5','6','7','8','9','*','0','#'];
-    
+
     this.jssip = jsSIPWrapper;
-    this.activate();
+
     this.isConnected = () => jsSIPWrapper.isConnected();
     this.$state = $state;
+    this.hotkeys = hotkeys;
+
+    this.activate();
 
   }
 
   activate() {
     this.jssip.checkConnection();
+
+    for (var key of this.padItems) {
+      this.hotkeys.add({
+        combo: key,
+        callback: (event) => this.onPressButton(event.key)
+      });
+    }
+
   }
 
   onPressButton(buttonValue) {
+
     if (!this.target) {
       this.target = '';
     }
@@ -32,7 +44,7 @@ export class PadController {
         event.stopPropagation();
       }
     }
-    
+
   }
 
   makeCall() {

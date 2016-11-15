@@ -16,7 +16,7 @@ import { ToolbarDirective } from './components/toolbar/toolbar.directive';
 
 
 
-angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'LocalStorageModule'])
+angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'LocalStorageModule','cfp.hotkeys'])
   .constant('moment', moment)
   .config(config)
   .config(routerConfig)
@@ -29,6 +29,6 @@ angular.module('workspace', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages
   .controller('PadController', PadController)
   .controller('CallsController', CallsController)
   .controller('ConfigController', ConfigController)
-  
+
   .directive('mainNavbar', NavbarDirective)
   .directive('mainToolbar', ToolbarDirective);

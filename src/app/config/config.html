@@ -1,12 +1,12 @@
 <main-toolbar></main-toolbar>
 
 <md-content layout="column" layout-padding layout-align="none none" flex="grow">
-	<form ng-submit="vm.connect()"> 
-		<md-input-container class="md-block">
+	<form ng-submit="vm.connect()">
+		<md-input-container class="md-block" >
 	   		<label>username: </label>
-	   		<input ng-model="vm.data.username" ng-disabled="vm.isConnected()">
+	   		<input ng-model="vm.data.username" ng-disabled="(vm.isConnected() || vm.data.uri !== '')">
 		</md-input-container>
-		
+
 		<md-input-container class="md-block">
 	   		<label>password: </label>
 	   		<input ng-model="vm.data.password" type="password" ng-disabled="vm.isConnected()">
@@ -21,7 +21,7 @@
 	   		<label>WS URI: </label>
 	   		<input ng-model="vm.data.ws_servers" ng-disabled="vm.isConnected()">
 		</md-input-container>
-			
+
 		<md-checkbox ng-disabled="!vm.data.save || vm.isConnected()" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.autoConnect" class="md-primary">
 	            Auto reconectar al Iniciar
 		</md-checkbox>
@@ -30,7 +30,7 @@
 	            Recordar configuración <em>(localstorage)</em>
 		</md-checkbox>
 
-		
+
 
 		<section layout="row" layout-align="center center" layout-wrap>
 		    <md-button class="md-raised md-primary" ng-hide="vm.isConnected()" ng-click="vm.connect()" ng-disabled="vm.connecting">
@@ -38,7 +38,7 @@
 		      	Conectar
 		  	</md-button>
 		    <md-button class="md-raised md-warn" ng-hide="!vm.isConnected()" ng-click="vm.disconnect()" ng-disabled="vm.disconnecting">
-		      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
+		      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon>
 		      	Desconectar
 		  	</md-button>
 	    </section>

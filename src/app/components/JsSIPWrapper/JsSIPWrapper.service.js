@@ -1,7 +1,7 @@
 export class JsSIPWrapperService {
 
 
-  constructor ($log,$window, $rootScope, $mdToast, jsSIPConfig, Call) {
+  constructor ($log,$window, $state, $rootScope, $mdToast, jsSIPConfig, Call) {
     'ngInject';
 
     this.$log = $log;
