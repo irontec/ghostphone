@@ -1,8 +1,29 @@
 <main-toolbar></main-toolbar>
 
-<md-content layout="column" layout-padding layout-align="start center" flex="grow"  >
+<md-content layout="column" layout-align="start stretch" flex="grow">
   
-LLamadas!
+<md-list flex>
+
+	<md-list-item class="md-2-line" ng-repeat="call in vm.calls">
+		
+
+		<md-icon ng-hide="call.type !== 'IN'" md-font-set="material-icons" aria-label="Entrante"> call_received </md-icon> 
+		<md-icon ng-hide="call.type !== 'OUT'" md-font-set="material-icons" aria-label="Saliente"> call_made </md-icon> 
+        
+        <div class="md-list-item-text">
+            <h3> {{ call.target }} </h3>
+            <p> {{ call.date  }} </p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)" aria-label="call">
+      	  <md-icon md-font-set="material-icons" aria-label="Llamar"> phone </md-icon> 
+        </md-button>
+
+    </md-list-item>
+
+
+  
+</md-list>
+
 
 </md-content>
 
