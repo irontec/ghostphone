@@ -4,26 +4,32 @@
 
 <md-list flex>
 
-	<md-list-item class="md-2-line" ng-repeat="call in vm.calls | orderBy:'-'" ng-class="{'active': call.status === 'active'}">
+    <md-list-item class="md-3-line" ng-repeat="call in vm.calls | orderBy:'-'" ng-class="{'active': call.status === 'active'}">
 
 
-		<!-- call.status: active / ringing / paused / finished -->
-		<md-icon ng-if="call.status === 'ringing'" ng.hide="call.status !== 'ringing'" md-font-set="material-icons"  class="md-accent shake shake-constant"> call </md-icon>
-		<md-icon ng-if="call.status === 'active'" md-font-set="material-icons"  class="md-accent"> call </md-icon>
+        <!-- call.status: active / ringing / paused / finished -->
+        <md-icon ng-if="call.status !== 'paused'"
+                 md-font-set="material-icons"
+                 class=""
+                 ng-class="{
+                    'md-accent shake shake-constant': call.status === 'ringing',
+                    'md-accent' : call.status === 'active'
+                }"> call </md-icon>
 
-		<md-icon ng-if="call.status === 'paused'" md-font-set="material-icons"> phone_paused </md-icon>
-		<md-icon ng-if="call.status === 'finished'" md-font-set="material-icons"> call </md-icon>
-		<!-- /call.status-->
+        <md-icon ng-if="call.status === 'paused'" md-font-set="material-icons"> phone_paused </md-icon>
+        <!-- /call.status-->
 
 
         <div class="md-list-item-text">
-            <h3> {{ call.target }}
+            <h3>
 
-				<!-- call.type IN / OUT / MISSED -->
-				<md-icon ng-if="call.type === 'IN'" md-font-set="material-icons" > call_received
-					<md-tooltip md-direction="right">
-		          		Llamada entrante
-		        	</md-tooltip>
+                {{ call.getDisplayTarget() }}
+                <!-- call.type IN / OUT / MISSED -->
+                <md-icon ng-if="call.type === 'IN'" md-font-set="material-icons" > call_received
+
+                    <md-tooltip md-direction="right">
+                        Llamada entrante
+                    </md-tooltip>
 				</md-icon>
 				<md-icon ng-if="call.type === 'OUT'" md-font-set="material-icons"> call_made
 					<md-tooltip md-direction="right">
@@ -43,22 +49,44 @@
 
 
         <!-- actions -->
-        <md-button class="md-icon-button" ng-if="call.status === 'paused'">
-            <md-icon md-font-set="material-icons" aria-label="recuperar"> swap_calls </md-icon>
+
+        <md-button class="md-icon-button extraSmall" ng-if="call.status === 'active' && !call.muted" ng-click="call.mute()">
+            <md-icon md-font-set="material-icons" aria-label="mutear"> volume_off </md-icon>
         </md-button>
 
 
-        <md-button class="md-icon-button" ng-if="call.status === 'active' || call.status === 'paused'">
-            <md-icon md-font-set="material-icons" aria-label="Colgar"> close </md-icon>
+        <md-button class="md-icon-button extraSmall" ng-if="call.status === 'active' && call.muted" ng-click="call.unmute()">
+            <md-icon md-font-set="material-icons" aria-label="mutear"> volume_up </md-icon>
         </md-button>
 
-		<md-button class="md-fab md-mini md-raised" ng-if="call.status === 'finished'">
+        <md-button class="md-icon-button extraSmall" ng-if="call.status === 'paused'" ng-click="call.unhold()">
+            <md-icon md-font-set="material-icons" aria-label="recuperar"> play_arrow </md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button extraSmall" ng-if="call.status === 'active'" ng-click="call.hold()">
+            <md-icon md-font-set="material-icons" aria-label="Pausar"> pause </md-icon>
+        </md-button>
+
+
+
+        <md-button class="md-fab md-mini md-raised" ng-if="call.status !== 'finished'" ng-click="call.hangup()"  md-colors="{::background: 'red'}">
+            <md-icon md-font-set="material-icons" aria-label="Colgar"> call_end </md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-raised" ng-if="call.status === 'finished'" ng-click="vm.makeCall(call);">
+            <md-icon md-font-set="material-icons" aria-label="Llamar"> call
+                <md-tooltip md-direction="top">
+                    Rellamar
+                </md-tooltip>
+            </md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-accent" ng-if="call.status === 'ringing' && call.type === 'IN'" ng-click="call.answer();">
             <md-icon md-font-set="material-icons" aria-label="Llamar"> call </md-icon>
         </md-button>
+
         <!-- /actions -->
 
-
-        </md-button>
 
     </md-list-item>
 

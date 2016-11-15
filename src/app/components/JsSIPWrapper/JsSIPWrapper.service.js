@@ -1,5 +1,6 @@
 export class JsSIPWrapperService {
 
+
   constructor ($log,$window, $rootScope, $mdToast, jsSIPConfig, Call) {
     'ngInject';
 
@@ -23,16 +24,17 @@ export class JsSIPWrapperService {
     if (this.JsSIPConfig.mustAutoConnect()) {
        this.toast.show(
           this.toast.simple()
+            .parent(angular.element(document.querySelector('md-content')))
             .textContent('conectando!')
             .capsule(true)
             .position('bottom')
-            .hideDelay(30000)
+            .hideDelay(3000)
         );
-  
-      this.connect();  
+
+      this.connect();
     }
 
-    
+
   }
 
   isConnected() {
@@ -60,7 +62,7 @@ export class JsSIPWrapperService {
       no_answer_timeout: 60,
       use_preloaded_route: false,
       hack_via_tcp: false,
-      hack_via_ws: false, 
+      hack_via_ws: false,
       hack_ip_in_contact: false
     };
 
@@ -75,7 +77,7 @@ export class JsSIPWrapperService {
     this.ua.on('disconnected', (e) => this.notify("disconnected"));
 
     this.ua.on('connecting', (e) => {
-      
+
     });
 
     this.ua.on('newRTCSession', (e) => {
@@ -102,34 +104,9 @@ export class JsSIPWrapperService {
     return this.calls;
   }
 
-  getCallEventHandlers() {
-    return {
-      'progress': (e)=> {
-        console.log('call is in progress', e);
-      },
-      'failed': (e) => {
-        console.log('call failed with cause: ', e);
-      },
-      'ended': (e) => {
-        console.log('call ended with cause: ', e);
-      },
-      'confirmed': (e) => {
-        console.log('call confirmed', e);
-      },
-      'addstream': (e) => {
-        var stream = e.stream;
-        console.log('remote stream added', stream);
-        var remoteView = document.getElementById('remoteView');
-        
-        remoteView = this.JsSIP.rtcninja.attachMediaStream(remoteView, stream);
-      }
-    };
-  }
-
 
   call(target) {
     this.ua.call(target, {
-      eventHandlers: this.getCallEventHandlers(),
       extraHeaders: [
         'X-Can-Renegotiate: ' + String(this.JsSIP.rtcninja.canRenegotiate)
       ],

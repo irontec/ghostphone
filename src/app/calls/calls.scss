@@ -3,3 +3,14 @@ md-list-item.active {
 		font-weight: bold !important;
 	}
 }
+
+
+button.md-icon-button.extraSmall {
+    margin: 0 6px;
+    height: 30px;
+    min-width: 0;
+    line-height: 16px;
+    padding: 6px;
+    width: 30px;
+    border-radius: 50%;
+}

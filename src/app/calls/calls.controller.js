@@ -2,12 +2,12 @@ export class CallsController {
   constructor ($timeout, $rootScope, jsSIPWrapper, moment) {
     'ngInject';
 
-    
+
     this.jssip = jsSIPWrapper;
-    
+
     this.activate();
     this.connected = () => jsSIPWrapper.isConnected();
-    
+
     this.calls = this.jssip.getCalls();
 
     // TODO: desinfectar!
@@ -54,12 +54,10 @@ export class CallsController {
     this.jssip.checkConnection();
   }
 
-  getWebDevTec(webDevTec) {
-    this.awesomeThings = webDevTec.getTec();
 
-    angular.forEach(this.awesomeThings, (awesomeThing) => {
-      awesomeThing.rank = Math.random();
-    });
+  makeCall(call) {
+    this.jssip.call(call.target);
+
   }
 
 }
