@@ -36,7 +36,9 @@ export class JsSIPConfigService {
   }
 
   get uri () {
-
+    if (this.data.uri !== '') {
+      return this.data.uri;
+    }
     return 'sip:' + this.data.username +'@irontec.com';
   }
 
