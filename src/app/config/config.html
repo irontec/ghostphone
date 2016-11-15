@@ -33,11 +33,11 @@
 		
 
 		<section layout="row" layout-align="center center" layout-wrap>
-		    <md-button class="md-raised md-primary" ng-hide="vm.isConnected()" ng-click="vm.connect()">
+		    <md-button class="md-raised md-primary" ng-hide="vm.isConnected()" ng-click="vm.connect()" ng-disabled="vm.connecting">
 		      	<md-icon md-font-set="material-icons" aria-label="Connected"> mood </md-icon>
 		      	Conectar
 		  	</md-button>
-		    <md-button class="md-raised md-warn" ng-hide="!vm.isConnected()" ng-click="vm.disconnect()">
+		    <md-button class="md-raised md-warn" ng-hide="!vm.isConnected()" ng-click="vm.disconnect()" ng-disabled="vm.disconnecting">
 		      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
 		      	Desconectar
 		  	</md-button>

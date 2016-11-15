@@ -3,36 +3,56 @@ export class ConfigController {
     'ngInject';
 
 
+    this.$scope = $scope;
     this.jssip = jsSIPWrapper;
     this.jssipConfig = jsSIPConfig;
 
     this.$timeout = $timeout;
+    this.$rootScope = $rootScope;
+
+
+    this.connecting = false;
+    this.disconnecting = false;
 
     this.activate();
-    this.isConnected = () => this.jssip.isConnected();
+
+
+
+    this.isConnected = () => {
+        
+        return this.jssip.isConnected();
+
+    };
 
     
 
     this.data = this.jssipConfig.getData();
+    
 
-    $rootScope.$on('statusUpdated', (event, data) => $timeout({
-
-
-    }));
+    $rootScope.$on('statusUpdated', (event, data) => {
+      if (data == "connected") {
+        this.connecting = false;
+      }
+      if (data == "disconnected") {
+        this.disconnecting = false;
+      }
+      $timeout({})
+    });
 
 
     $scope.$watch(() => this.jssipConfig.getData(), this.configChanged(), true);
-    
 
-    /*setInterval(() => {
+    $scope.$watch(() => this.connecting, () => {
 
-        console.log(this.isConnected());
-        $scope.$watch(() => this.isConnected(), this.connectionChanged(), false);
+         $timeout({});
 
-    }, 1000);*/
+    }, true);
 
+    $scope.$watch(() => this.disconnecting, () => {
 
-    //$scope.$watch(() => this.isConnected(), this.connectionChanged(), false);
+         $timeout({});
+
+    }, true);
 
 
   }
@@ -42,18 +62,16 @@ export class ConfigController {
   }
 
   disconnect() {
+    this.disconnecting = true;
     this.jssip.disconnect();
-    this.$timeout({},1000);
   }
 
   connect() {
+    this.connecting = true;
     this.jssip.connect();
-    this.$timeout({},1000);
-
   }
 
   connectionChanged () {
-    console.log("CONNN CHANGED!");
     this.$timeout({});
   }
 
