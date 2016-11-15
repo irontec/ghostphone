@@ -21,7 +21,7 @@ export class JsSIPWrapperService {
 
   loadStoredCalls () {
     let callList = this.localStorageService.get("callList");
-    if (callList.length) {
+    if (callList && callList.length) {
       this.calls = callList.map((c)=>this.callService.doImport(c)).filter((c)=>c.constructor.name === 'Call') || [];
     }
   }
