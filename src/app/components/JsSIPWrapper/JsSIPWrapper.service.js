@@ -1,15 +1,18 @@
 export class JsSIPWrapperService {
 
-  constructor ($log,$window, jsSIPConfig, Call, $mdToast) {
+  constructor ($log,$window, $rootScope, $mdToast, jsSIPConfig, Call) {
     'ngInject';
 
     this.$log = $log;
+    this.$rootScope = $rootScope;
     this.JsSIP = $window.JsSIP;
     this.JsSIPConfig = jsSIPConfig;
     this.ua = null;
     this.toast = $mdToast;
     this.callService = Call;
     this.calls = [];
+
+
   }
 
   checkConnection(force) {
@@ -62,12 +65,22 @@ export class JsSIPWrapperService {
     };
 
 
+    console.log(configuration);
+
     this.ua = new this.JsSIP.UA(configuration);
+
+
+    this.ua.on('connected', (e) => this.notifyConnected());
+    this.ua.on('disconnected', (e) => this.notifyConnected());
 
     this.ua.on('newRTCSession', (e) => {
       this.calls.push(this.callService.factory(e.session));
     });
     this.ua.start();
+  }
+
+  notifyConnected () {
+    this.$rootScope.$broadcast('statusUpdated');
   }
 
   disconnect() {

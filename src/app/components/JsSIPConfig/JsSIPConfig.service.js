@@ -11,6 +11,7 @@ export class JsSIPConfigService {
 
     this.data = {
       ws_servers: '',
+      uri: '',
       username: '',
       password: '',
       autoConnect: false,
@@ -28,6 +29,7 @@ export class JsSIPConfigService {
 
   isValid() {
     return this.data.ws_servers !== '' &&
+            this.data.uri !== '' &&
             this.data.username !== '' &&
             this.data.password !== '';
   }
@@ -37,7 +39,8 @@ export class JsSIPConfigService {
   }
 
   get uri () {
-    return 'sip:' + this.data.username +'@irontec.com';
+    return this.data.uri;
+    //return 'sip:' + this.data.username +'@irontec.com';
   }
   
   get ws_servers() {

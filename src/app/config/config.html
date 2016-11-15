@@ -1,44 +1,48 @@
 <main-toolbar></main-toolbar>
 
 <md-content layout="column" layout-padding layout-align="none none" flex="grow">
-
-	<md-input-container class="md-block">
-   		<label>username: </label>
-   		<input ng-model="vm.data.username" ng-disabled="vm.connected()">
-	</md-input-container>
-	
-	<md-input-container class="md-block">
-   		<label>password: </label>
-   		<input ng-model="vm.data.password" type="password" ng-disabled="vm.connected()">
-	</md-input-container>
-
-	<md-input-container class="md-block">
-   		<label>WS URI: </label>
-   		<input ng-model="vm.data.ws_servers" ng-disabled="vm.connected()">
-	</md-input-container>
+	<form ng-submit="vm.connect()"> 
+		<md-input-container class="md-block">
+	   		<label>username: </label>
+	   		<input ng-model="vm.data.username" ng-disabled="vm.isConnected()">
+		</md-input-container>
 		
-	<md-checkbox ng-disabled="!vm.data.save || vm.connected()" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.autoConnect" class="md-primary">
-            Auto reconectar al Iniciar
-	</md-checkbox>
+		<md-input-container class="md-block">
+	   		<label>password: </label>
+	   		<input ng-model="vm.data.password" type="password" ng-disabled="vm.isConnected()">
+		</md-input-container>
 
-	<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.save" class="md-primary" ng-disabled="vm.connected()">
-            Recordar configuración <em>(localstorage)</em>
-	</md-checkbox>
+		<md-input-container class="md-block">
+	   		<label>SIP URI: </label>
+	   		<input ng-model="vm.data.uri" ng-disabled="vm.isConnected()">
+		</md-input-container>
 
-	
+		<md-input-container class="md-block">
+	   		<label>WS URI: </label>
+	   		<input ng-model="vm.data.ws_servers" ng-disabled="vm.isConnected()">
+		</md-input-container>
+			
+		<md-checkbox ng-disabled="!vm.data.save || vm.isConnected()" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.autoConnect" class="md-primary">
+	            Auto reconectar al Iniciar
+		</md-checkbox>
 
-	<section layout="row" layout-align="center center" layout-wrap>
-	    <md-button class="md-raised md-primary" ng-hide="vm.connected()" ng-click="vm.connect()">
-	      	<md-icon md-font-set="material-icons" aria-label="Connected"> mood </md-icon>
-	      	Conectar
-	  	</md-button>
-	    <md-button class="md-raised md-warn" ng-hide="!vm.connected()" ng-click="vm.disconnect()">
-	      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
-	      	Desconectar
-	  	</md-button>
-    </section>
+		<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.save" class="md-primary" ng-disabled="vm.isConnected()">
+	            Recordar configuración <em>(localstorage)</em>
+		</md-checkbox>
 
+		
 
+		<section layout="row" layout-align="center center" layout-wrap>
+		    <md-button class="md-raised md-primary" ng-hide="vm.isConnected()" ng-click="vm.connect()">
+		      	<md-icon md-font-set="material-icons" aria-label="Connected"> mood </md-icon>
+		      	Conectar
+		  	</md-button>
+		    <md-button class="md-raised md-warn" ng-hide="!vm.isConnected()" ng-click="vm.disconnect()">
+		      	<md-icon md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
+		      	Desconectar
+		  	</md-button>
+	    </section>
+	</form>
 </md-content>
 
 <main-navbar></main-navbar>
