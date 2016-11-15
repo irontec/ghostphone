@@ -5,8 +5,16 @@
     </h3>
     <span flex></span>
 	
-	<md-icon ng-hide="!vm.connected()" md-font-set="material-icons" aria-label="Connected"> mood </md-icon> 
-	<md-icon ng-hide="vm.connected()" md-font-set="material-icons" aria-label="Disconnected"> mood_bad </md-icon> 
+	<md-icon ng-hide="!vm.connected()" md-font-set="material-icons" aria-label="Connected"> mood 
+  		<md-tooltip md-direction="left">
+          Conectado
+        </md-tooltip>
+	</md-icon> 
+	<md-icon ng-hide="vm.connected()" md-font-set="material-icons" aria-label="Disconnected"> mood_bad 
+	  <md-tooltip md-direction="left">
+          No Conectado
+        </md-tooltip>
+    </md-icon> 
       
     </div>
 </md-toolbar>

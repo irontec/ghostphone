@@ -1,4 +1,4 @@
-export function config ($logProvider, localStorageServiceProvider) {
+export function config ($logProvider, localStorageServiceProvider, $mdThemingProvider) {
   'ngInject';
   // Enable log
   $logProvider.debugEnabled(true);
@@ -6,5 +6,8 @@ export function config ($logProvider, localStorageServiceProvider) {
 
   localStorageServiceProvider.setPrefix('ghostPhone');
 
+  $mdThemingProvider.theme('default')
+    .primaryPalette('pink')
+    .accentPalette('orange');
 
 }

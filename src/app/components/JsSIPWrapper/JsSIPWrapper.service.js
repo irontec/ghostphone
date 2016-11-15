@@ -1,13 +1,13 @@
 export class JsSIPWrapperService {
 
-  constructor ($log, $window, jsSIPConfig) {
+  constructor ($log, $window, jsSIPConfig, $mdToast) {
     'ngInject';
 
     this.$log = $log;
     this.JsSIP = $window.JsSIP;
     this.JsSIPConfig = jsSIPConfig;
     this.ua = null;
-
+    this.toast = $mdToast;
   }
 
   checkConnection(force) {
@@ -16,6 +16,14 @@ export class JsSIPWrapperService {
     }
 
     if (this.JsSIPConfig.mustAutoConnect()) {
+       this.toast.show(
+      this.toast.simple()
+        .textContent('conectando!')
+        .capsule(true)
+        .position('top end')
+        .hideDelay(30000)
+        .toastClass('toastMsg')
+    );
       this.connect();  
     }
 
