@@ -67,18 +67,13 @@ export class JsSIPWrapperService {
     };
 
 
-    console.log(configuration);
 
     this.ua = new this.JsSIP.UA(configuration);
 
 
     this.ua.on('connected', (e) => this.notify("connected"));
-
     this.ua.on('disconnected', (e) => this.notify("disconnected"));
-
-    this.ua.on('connecting', (e) => {
-
-    });
+    this.ua.on('connecting', (e) => {});
 
     this.ua.on('newRTCSession', (e) => {
       this.calls.push(this.callService.factory(e.session));

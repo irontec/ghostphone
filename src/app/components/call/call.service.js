@@ -1,10 +1,11 @@
 
 class CleanCall {
-    constructor (session, moment, storage, $rootScope, $window) {
+    constructor (session, moment, storage, $rootScope, $window, $state, $interval) {
 
         this.session = session;
         this.$rootScope = $rootScope;
         this.JsSIP = $window.JsSIP;
+        this.moment = moment;
 
         this.localStream = null;
         this.type =  this.session.direction === "incoming"? 'IN':'OUT';
@@ -13,8 +14,11 @@ class CleanCall {
         this.username = this.session.remote_identity.display_name || '';
         this.muted = false;
         this.date = moment().format('DD/MM/YYYY HH:mm:ss');
+
+
+
         this.status = 'ringing';
-        this.duration = '00:60';
+        this.duration = '';
 
         session.on('connecting', (e) => this.onConnecting(e));
         session.on('progress', (e) => this.onProgress(e));
@@ -26,6 +30,10 @@ class CleanCall {
         session.on('ended', (e) => this.onEnded(e));
         session.on('update', (e) => this.onUpdate(e));
         session.on('addstream', (e) => this.onStreamAdded(e));
+
+        if (this.type === 'IN') {
+            $state.go('calls');
+        }
 
         this.notifyUI();
 
@@ -60,6 +68,9 @@ class CleanCall {
             this.session.data.remoteCanRenegotiateRTC = true;
           }
         }
+
+        this.date = moment(this.session.start_time).format('DD/MM/YYYY HH:mm:ss');
+
     }
 
     onStreamAdded (e) {
@@ -84,21 +95,27 @@ class CleanCall {
     }
 
     onEnded (e) {
-        console.log("ENDED", e, this);
+
         this.status = 'finished';
+        var startTime = this.moment(this.session.start_time);
+        var endTime = this.moment(this.session.end_time);
+
+        var duration = this.moment.duration(endTime.diff(startTime));
+
+        this.duration = this.moment.utc(duration.asMilliseconds()).format("mm:ss");
+
         this.notifyUI();
         this.JsSIP.rtcninja.closeMediaStream(this.localStream);
 
     }
 
     onUpdate () {
-
         this.status = 'finished';
         this.notifyUI();
     }
 
     onFailed () {
-        console.log("FAILED");
+
         this.status = 'finished';
         this.notifyUI();
     }
@@ -144,17 +161,19 @@ class CleanCall {
 }
 
 export class CallService {
-  constructor ($rootScope, localStorageService, moment, $window) {
+  constructor ($rootScope, localStorageService, moment, $window, $state, $interval) {
     'ngInject';
     this.moment = moment;
     this.storage = localStorageService
     this.$rootScope = $rootScope;
     this.$window = $window;
+    this.$state = $state;
+    this.$interval = $interval;
 
   }
 
   factory(session) {
-  	return new CleanCall(session, this.moment, this.storage, this.$rootScope, this.$window);
+  	return new CleanCall(session, this.moment, this.storage, this.$rootScope, this.$window, this.$state, this.$interval);
   }
 
 }

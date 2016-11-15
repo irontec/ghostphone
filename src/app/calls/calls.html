@@ -44,7 +44,7 @@
 				<!-- /call.type-->
 
             </h3>
-            <p> {{ call.date  }} <em ng-if="call.type !== 'MISSED'" >({{ call.duration }})</p>
+            <p> {{ call.date  }} <em ng-if="call.type !== 'MISSED' && call.duration !== ''" >({{ call.duration }})</p>
         </div>
 
 
