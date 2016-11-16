@@ -10,6 +10,7 @@ export class JsSIPWrapperService {
     this.$document = $window.document;
     this.JsSIPConfig = jsSIPConfig;
     this.localStorageService = localStorageService;
+
     this.ua = null;
     this.toast = $mdToast;
     this.callService = Call;
@@ -21,8 +22,11 @@ export class JsSIPWrapperService {
 
   loadStoredCalls () {
     let callList = this.localStorageService.get("callList");
+    
     if (callList && callList.length) {
       this.calls = callList.map((c)=>this.callService.doImport(c)).filter((c)=>c.constructor.name === 'Call') || [];
+      this.$rootScope.$broadcast('callsUpdated');
+
     }
   }
 
