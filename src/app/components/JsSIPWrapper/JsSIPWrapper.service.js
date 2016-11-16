@@ -22,9 +22,9 @@ export class JsSIPWrapperService {
 
   loadStoredCalls () {
     let callList = this.localStorageService.get("callList");
-    
+
     if (callList && callList.length) {
-      this.calls = callList.map((c)=>this.callService.doImport(c)).filter((c)=>c.constructor.name === 'Call') || [];
+      this.calls = callList.map((c)=>this.callService.doImport(c)).filter((c)=>c.id !== '') || [];
       this.$rootScope.$broadcast('callsUpdated');
 
     }
@@ -88,7 +88,7 @@ export class JsSIPWrapperService {
 
   notify (status, event) {
     this.$rootScope.$broadcast('statusUpdated', status);
-    
+
     if (status === 'registered') {
 
       this.whoami = event.response.from.uri.user;
