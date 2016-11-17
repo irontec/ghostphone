@@ -130,8 +130,9 @@ export class JsSIPWrapperService {
   }
 
   deleteStoredCallList() {
-    this.calls = [];
-    this.localStorageService.remove("callList");
+    this.calls = this.calls.filter(function(c) {
+      return c.status !== 'finished';
+    });
     this.$rootScope.$broadcast('callsUpdated');
   }
 

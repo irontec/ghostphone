@@ -13,18 +13,13 @@ export class CallsController {
 
     // TODO: desinfectar!
     $rootScope.$on('callsUpdated', () => {
-    
       this.calls = this.jssip.getCalls();
-      
       $timeout(()=>{
         this.localStorageService.set("callList", this.calls.map((c)=>c.doExport()));
       });
-
     });
    
-
   }
-
 
   activate() {
     this.jssip.checkConnection();
@@ -48,7 +43,5 @@ export class CallsController {
     this.$mdDialog.show(confirm).then(() => this.jssip.deleteStoredCallList());
 
   }
-
-
-
+  
 }
