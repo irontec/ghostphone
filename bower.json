@@ -17,7 +17,7 @@
     "animate.css": "~3.4.0",
     "angular": "~1.5.3",
     "material-design-icons": "^3.0.1",
-    "jssip": "^2.0.6",
+    "jssip": "^3.0.0",
     "angular-local-storage": "^0.5.2",
     "csshake": "^1.5.1",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#^1.7.0"

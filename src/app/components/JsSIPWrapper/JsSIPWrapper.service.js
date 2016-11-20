@@ -52,10 +52,11 @@ export class JsSIPWrapperService {
       return;
     }
 
+    let socket = new this.JsSIP.WebSocketInterface(this.JsSIPConfig.wss);
     let configuration = {
-      uri: this.JsSIPConfig.uri,
+      sockets  : [ socket ],
+      uri      : this.JsSIPConfig.uri,
       password: this.JsSIPConfig.password,
-      ws_servers: this.JsSIPConfig.ws_servers,
       //log: { level: 'debug' },
       register: true,
       register_expires: 600,
@@ -69,7 +70,6 @@ export class JsSIPWrapperService {
       hack_via_ws: false,
       hack_ip_in_contact: false
     };
-
 
 
     this.ua = new this.JsSIP.UA(configuration);
@@ -138,9 +138,6 @@ export class JsSIPWrapperService {
 
   call(target) {
     this.ua.call(target, {
-      extraHeaders: [
-        'X-Can-Renegotiate: ' + String(this.JsSIP.rtcninja.canRenegotiate)
-      ],
       mediaConstraints: {'audio': true, 'video': false},
       pcConfig: { "iceServers": [ {"urls": ["stun:stun.l.google.com:19302"]} ], "gatheringTimeout": 2000 },
       rtcOfferConstraints: {

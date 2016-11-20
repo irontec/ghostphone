@@ -11,6 +11,8 @@ class Call {
         this.moment = moment;
         this.localStream = null;
         this.muted = false;
+        
+        
 
     }
 
@@ -37,7 +39,8 @@ class Call {
         session.on('unhold', (e) => this.onUnhold(e));
         session.on('ended', (e) => this.onEnded(e));
         session.on('update', (e) => this.onUpdate(e));
-        session.on('addstream', (e) => this.onStreamAdded(e));
+
+        session.connection.addEventListener('addstream', (e) => this.onStreamAdded(e));
 
         if (this.type === 'IN') {
             this.$state.go('calls');
@@ -81,9 +84,8 @@ class Call {
     }
 
     onStreamAdded (e) {
-
         var remoteView = this.$document.getElementById('remoteView');
-        remoteView = this.JsSIP.rtcninja.attachMediaStream(remoteView, e.stream);
+        remoteView.srcObject = e.stream;
 
     }
 
@@ -112,7 +114,8 @@ class Call {
         this.duration = this.moment.utc(duration.asMilliseconds()).format("mm:ss");
 
         this.notifyUI();
-        this.JsSIP.rtcninja.closeMediaStream(this.localStream);
+        this.JsSIP.Utils.closeMediaStream(this.localStream);
+
 
     }
 

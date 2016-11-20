@@ -19,7 +19,7 @@
 
 		<md-input-container class="md-block">
 	   		<label>WS URI: </label>
-	   		<input ng-model="vm.data.ws_servers" ng-disabled="vm.isConnected()">
+	   		<input ng-model="vm.data.wss" ng-disabled="vm.isConnected()">
 		</md-input-container>
 
 		<md-checkbox ng-disabled="!vm.data.save || vm.isConnected()" md-no-ink aria-label="Checkbox No Ink" ng-model="vm.data.autoConnect" class="md-primary">

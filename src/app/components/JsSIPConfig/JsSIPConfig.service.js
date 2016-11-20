@@ -7,7 +7,7 @@ export class JsSIPConfigService {
     let storedData = this.storage.get('JsSIPData');
 
     this.data = {
-      ws_servers: '',
+      wss: '',
       uri: '',
       username: '',
       password: '',
@@ -25,7 +25,7 @@ export class JsSIPConfigService {
 
 
   isValid() {
-    return this.data.ws_servers !== '' &&
+    return this.data.wss !== '' &&
             (this.data.uri !== '' ||
             this.data.username !== '' ) &&
             this.data.password !== '';
@@ -42,8 +42,8 @@ export class JsSIPConfigService {
     return 'sip:' + this.data.username +'@irontec.com';
   }
 
-  get ws_servers() {
-    return this.data.ws_servers;
+  get wss() {
+    return this.data.wss;
   }
 
   get password() {
